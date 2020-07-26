@@ -1,2 +1,4 @@
 type=command
-command=java -jar azkaban-data-push.jar
+fileName=DataClear.properties
+json1=${json}
+command=java -jar azkaban-data-push.jar  "{json1}"
