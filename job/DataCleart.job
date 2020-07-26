@@ -1,0 +1,2 @@
+type=command
+command=java -jar azkaban-data-push.jar
