@@ -1,5 +1,6 @@
 package org.poem.exec;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import org.poem.config.DatabaseContainer;
 import org.poem.vo.ExecTaskDetailPlanVO;
@@ -21,7 +22,14 @@ public class DataPushApp {
     private static final Logger logger = LoggerFactory.getLogger(DataPushApp.class);
 
     public static void main(String[] args) {
-
+        String par = args[0];
+        ExecTaskDetailPlanVO execTaskDetailPlanVO = JSONObject.parseObject(par, ExecTaskDetailPlanVO.class);
+        try {
+            importData(execTaskDetailPlanVO);
+        } catch (SQLException throwables) {
+            logger.error(throwables.getMessage(), throwables);
+            throwables.printStackTrace();
+        }
     }
 
     /**
@@ -29,7 +37,7 @@ public class DataPushApp {
      *
      * @param dataTransformVO
      */
-    public void importData(ExecTaskDetailPlanVO dataTransformVO) throws SQLException {
+    public static void importData(ExecTaskDetailPlanVO dataTransformVO) throws SQLException {
         JdbcTemplate sourceJdbc = DatabaseContainer.getSourceJdbc(dataTransformVO);
         JdbcTemplate targetJdbc = DatabaseContainer.getSourceJdbc(dataTransformVO);
         insertInto(pre(targetJdbc, dataTransformVO), sourceJdbc, dataTransformVO);
@@ -43,7 +51,7 @@ public class DataPushApp {
      * @param dataTransformVO 结果
      * @return
      */
-    public List<Map<String, Object>> pre(JdbcTemplate targetJdbc, ExecTaskDetailPlanVO dataTransformVO) {
+    private static List<Map<String, Object>> pre(JdbcTemplate targetJdbc, ExecTaskDetailPlanVO dataTransformVO) {
         String aroundSql = dataTransformVO.getAroundSql();
         return targetJdbc.queryForList(aroundSql);
     }
@@ -54,7 +62,7 @@ public class DataPushApp {
      *
      * @param sourceJdbc
      */
-    public void insertInto(List<Map<String, Object>> data, JdbcTemplate sourceJdbc, ExecTaskDetailPlanVO dataTransformVO) {
+    private static void insertInto(List<Map<String, Object>> data, JdbcTemplate sourceJdbc, ExecTaskDetailPlanVO dataTransformVO) {
         String aroundSql = dataTransformVO.getAroundSql();
         List<String> manySQl = Lists.newArrayList();
         for (Map<String, Object> datum : data) {
