@@ -22,7 +22,7 @@ public class DataPushApp {
     private static final Logger logger = LoggerFactory.getLogger(DataPushApp.class);
 
     public static void main(String[] args) {
-        String par = args[0];
+        String par = "{\"aroundSql\":\"insert into wedding_view_bigdata (id, view_count,view_people_count,view_date,attr) values('1', '@count','@user_id', '@time' ,null)\",\"beforeSql\":\"SELECT\\n\\t`code`,\\n\\tDATE_FORMAT(time, \\\"%Y-%m-%d\\\") AS `time`,\\n\\tcount(1) AS count,\\n\\tCOUNT(DISTINCT user_id) as user_id\\nFROM\\n\\tt_event_tracking_frequency_info_origin\\nwhere 1=1\\nAND code = \\\"10001\\\"\\nand time >  CONCAT(DATE_FORMAT(NOW(), \\\"%Y-%m-%d\\\"),\\\" 00:00:00\\\")\\nand time <= CONCAT(DATE_FORMAT(NOW(), \\\"%Y-%m-%d\\\"),\\\" 23:59:59\\\")\\ngroup by `code`,DATE_FORMAT(time, \\\"%Y-%m-%d\\\")   \\norder by DATE_FORMAT(time, \\\"%Y-%m-%d\\\") desc\",\"sourceIp\":\"39.105.196.142\",\"sourcePasswd\":\"zgdc\",\"sourcePort\":43306,\"sourceSchema\":\"zgdc_warehouse_source\",\"sourceSourceType\":\"1\",\"sourceUserName\":\"root\",\"targetIp\":\"192.168.51.152\",\"targetPasswd\":\"123456\",\"targetPort\":3306,\"targetSchema\":\"xxl_job\",\"targetSourceType\":\"1\",\"targetUserName\":\"root\"}";
         ExecTaskDetailPlanVO execTaskDetailPlanVO = JSONObject.parseObject(par, ExecTaskDetailPlanVO.class);
         try {
             importData(execTaskDetailPlanVO);
@@ -39,21 +39,21 @@ public class DataPushApp {
      */
     public static void importData(ExecTaskDetailPlanVO dataTransformVO) throws SQLException {
         JdbcTemplate sourceJdbc = DatabaseContainer.getSourceJdbc(dataTransformVO);
-        JdbcTemplate targetJdbc = DatabaseContainer.getSourceJdbc(dataTransformVO);
-        insertInto(pre(targetJdbc, dataTransformVO), sourceJdbc, dataTransformVO);
+        JdbcTemplate targetJdbc = DatabaseContainer.getTargetJdbc(dataTransformVO);
+        insertInto(pre(sourceJdbc, dataTransformVO), targetJdbc, dataTransformVO);
     }
 
 
     /**
      * 前置
      *
-     * @param targetJdbc      目标库
+     * @param sourceJdbc      目标库
      * @param dataTransformVO 结果
      * @return
      */
-    private static List<Map<String, Object>> pre(JdbcTemplate targetJdbc, ExecTaskDetailPlanVO dataTransformVO) {
-        String aroundSql = dataTransformVO.getAroundSql();
-        return targetJdbc.queryForList(aroundSql);
+    private static List<Map<String, Object>> pre(JdbcTemplate sourceJdbc, ExecTaskDetailPlanVO dataTransformVO) {
+        String aroundSql = dataTransformVO.getBeforeSql();
+        return sourceJdbc.queryForList(aroundSql);
     }
 
 

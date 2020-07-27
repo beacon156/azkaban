@@ -57,7 +57,7 @@ public class DatabaseContainer {
      * @param dataTransformVO
      * @return
      */
-    static JdbcTemplate getTargetJdbc(ExecTaskDetailPlanVO dataTransformVO) {
+    public static JdbcTemplate getTargetJdbc(ExecTaskDetailPlanVO dataTransformVO) {
         String url = DataSourceUrlHelper.getDatabaseUrl(dataTransformVO.getTargetIp(),
                 dataTransformVO.getTargetPort(), dataTransformVO.getTargetSchema(),
                 dataTransformVO.getTargetSourceType());

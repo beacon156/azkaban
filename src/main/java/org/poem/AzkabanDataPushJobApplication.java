@@ -19,7 +19,10 @@ public class AzkabanDataPushJobApplication {
     private static final Logger logger = LoggerFactory.getLogger(AzkabanDataPushJobApplication.class);
 
     public static void main(String[] args) {
-        logger.info("pars:\n {}", JSONObject.toJSONString(args));
+        for (String arg : args) {
+            logger.info("pars:\n {}", arg);
+        }
+
         ExecTaskDetailPlanVO execTaskDetailPlanVO = JSONObject.parseObject(args[0], ExecTaskDetailPlanVO.class);
         if ("clear".equals(args[1])) {
             try {

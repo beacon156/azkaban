@@ -37,7 +37,7 @@ public class DataClear {
      */
     public static void importData(ExecTaskDetailPlanVO dataTransformVO) throws SQLException {
         JdbcTemplate sourceJdbc = DatabaseContainer.getSourceJdbc(dataTransformVO);
-        JdbcTemplate targetJdbc = DatabaseContainer.getSourceJdbc(dataTransformVO);
+        JdbcTemplate targetJdbc = DatabaseContainer.getTargetJdbc(dataTransformVO);
         clear(targetJdbc, dataTransformVO);
     }
 
