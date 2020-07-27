@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.SQLException;
 
 import static org.poem.exec.DataClear.importData;
@@ -23,7 +25,14 @@ public class AzkabanDataPushJobApplication {
             logger.info("pars:\n {}", arg);
         }
 
-        ExecTaskDetailPlanVO execTaskDetailPlanVO = JSONObject.parseObject(args[0], ExecTaskDetailPlanVO.class);
+        String decode = "{}";
+        try {
+            decode = URLDecoder.decode(args[0], "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        logger.info("decode:\n {}", decode);
+        ExecTaskDetailPlanVO execTaskDetailPlanVO = JSONObject.parseObject(decode, ExecTaskDetailPlanVO.class);
         if ("clear".equals(args[1])) {
             try {
                 importData(execTaskDetailPlanVO);
