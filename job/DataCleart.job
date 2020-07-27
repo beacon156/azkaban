@@ -1,5 +1,5 @@
 type=command
 fileName=DataClear.properties
-json1=${json}
+clear_json1=${clear_json}
 type1=clear
-command=java -jar azkaban-data-push.jar  ${json1}  ${type1}
+command=java -jar azkaban-data-push.jar  ${clear_json1}  ${type1}

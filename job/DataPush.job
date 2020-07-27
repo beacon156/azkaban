@@ -1,6 +1,6 @@
 type=command
 fileName=DataClear.properties
-json1=${json}
+push_json1=${push_json}
 type1=push
 dependencies=DataCleart
-command=java -jar azkaban-data-push.jar  ${json1}  ${type1}
+command=java -jar azkaban-data-push.jar  ${push_json1}  ${type1}
