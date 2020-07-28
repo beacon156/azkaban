@@ -1,12 +1,10 @@
 package org.poem;
 
 import com.alibaba.fastjson.JSONObject;
-import org.poem.exec.DataClear;
 import org.poem.exec.DataPushApp;
 import org.poem.vo.ExecTaskDetailPlanVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.UnsupportedEncodingException;
