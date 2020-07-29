@@ -2,11 +2,15 @@ package org.poem.vo;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author sangfor
  */
 @Data
+@Setter
+@Getter
 public class ExecTaskDetailPlanVO {
 
 
